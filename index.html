@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>威力彩工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="text-slate-300">
+    <div class="max-w-2xl mx-auto px-4 py-12">
+        <!-- 標題 -->
+        <div class="text-center mb-12">
+            <div class="text-5xl mb-4">🎰</div>
+            <h1 class="text-3xl font-bold text-white mb-2">威力彩工具</h1>
+            <p class="text-slate-400">號碼產生 ＆ 對獎程式</p>
+        </div>
+
+        <!-- 功能卡片 -->
+        <div class="grid-2">
+            <a href="generate.html" class="feature-card">
+                <div class="text-4xl mb-4">🎲</div>
+                <h2 class="text-xl font-bold text-white mb-2">號碼產生器</h2>
+                <p class="text-slate-400 text-sm">
+                    使用 5 種策略產生投注號碼<br>
+                    支援自訂 favorite / hot / cold
+                </p>
+                <div class="mt-4 text-blue-400 text-sm font-medium">
+                    開始使用 →
+                </div>
+            </a>
+
+            <a href="check.html" class="feature-card">
+                <div class="text-4xl mb-4">🏆</div>
+                <h2 class="text-xl font-bold text-white mb-2">對獎程式</h2>
+                <p class="text-slate-400 text-sm">
+                    輸入開獎號碼與投注號碼<br>
+                    自動展開分組、逐注對獎
+                </p>
+                <div class="mt-4 text-blue-400 text-sm font-medium">
+                    開始使用 →
+                </div>
+            </a>
+        </div>
+
+        <!-- 策略說明 -->
+        <div class="card mt-8">
+            <h3 class="text-lg font-bold text-white mb-3">可用策略</h3>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>策略</th>
+                        <th>注數</th>
+                        <th>成本</th>
+                        <th>說明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-blue-400 font-medium">56注全包</td>
+                        <td>56</td>
+                        <td>5,600元</td>
+                        <td class="text-slate-400 text-sm">7組第一區 × 第二區全包</td>
+                    </tr>
+                    <tr>
+                        <td class="text-blue-400 font-medium">28注(必中九獎)</td>
+                        <td>28</td>
+                        <td>2,800元</td>
+                        <td class="text-slate-400 text-sm">7組第一區 × 第二區分2半</td>
+                    </tr>
+                    <tr>
+                        <td class="text-blue-400 font-medium">21注(7組碰)</td>
+                        <td>21</td>
+                        <td>2,100元</td>
+                        <td class="text-slate-400 text-sm">C(7,6)=7組 × 3個第二區</td>
+                    </tr>
+                    <tr>
+                        <td class="text-blue-400 font-medium">8注(第二區全包)</td>
+                        <td>8</td>
+                        <td>800元</td>
+                        <td class="text-slate-400 text-sm">1組第一區 × 第二區1~8</td>
+                    </tr>
+                    <tr>
+                        <td class="text-blue-400 font-medium">8注(第一區展開)</td>
+                        <td>8</td>
+                        <td>800元</td>
+                        <td class="text-slate-400 text-sm">8組加權第一區 × 各1個第二區</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-slate-500 text-sm mt-8">
+            威力彩頭獎機率 1/22,085,448 · 頭獎累積約 13.5 億時期望值 = 100 元
+        </div>
+    </div>
+</body>
+</html>

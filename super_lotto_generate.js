@@ -152,7 +152,7 @@ function strategy8SecondFull(selectedFirst = []) {
     return tickets; // 8 注
 }
 
-function strategy8FirstSpread(favorite = [3, 17, 8], hot = [14, 17, 7, 10, 23, 25, 26, 34, 35, 37, 38], cold = [2, 4, 6, 13, 18, 21, 24]) {
+function strategy8FirstSpread(favorite = [], hot = [], cold = []) {
     // 建立加權號碼池
     let numbers = [...FIRST_AREA_RANGE, ...favorite, ...hot, ...cold];
 

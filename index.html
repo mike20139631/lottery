@@ -3,27 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>威力彩工具</title>
+    <title>樂透工具</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 0.75rem;
+        }
+        .coming-soon {
+            opacity: 0.5;
+            pointer-events: none;
+            position: relative;
+        }
+        .coming-soon::after {
+            content: '即將推出';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+    </style>
 </head>
 <body class="text-slate-300">
     <div class="max-w-2xl mx-auto px-4 py-12">
         <!-- 標題 -->
         <div class="text-center mb-12">
             <div class="text-5xl mb-4">🎰</div>
-            <h1 class="text-3xl font-bold text-white mb-2">威力彩工具</h1>
-            <p class="text-slate-400">號碼產生 ＆ 對獎程式</p>
+            <h1 class="text-3xl font-bold text-white mb-2">樂透工具</h1>
+            <p class="text-slate-400">號碼產生 ＆ 對獎程式 ＆ 機率分析</p>
         </div>
 
-        <!-- 功能卡片 -->
-        <div class="grid-2">
-            <a href="generate.html" class="feature-card">
+        <!-- 威力彩 -->
+        <div class="section-label">🎰 威力彩（Super Lotto）</div>
+        <div class="grid-2 mb-8">
+            <a href="super_lotto_generate.html" class="feature-card">
                 <div class="text-4xl mb-4">🎲</div>
                 <h2 class="text-xl font-bold text-white mb-2">號碼產生器</h2>
                 <p class="text-slate-400 text-sm">
-                    使用 5 種策略產生投注號碼<br>
+                    5 種策略產生投注號碼<br>
                     支援自訂 favorite / hot / cold
                 </p>
                 <div class="mt-4 text-blue-400 text-sm font-medium">
@@ -31,7 +59,7 @@
                 </div>
             </a>
 
-            <a href="check.html" class="feature-card">
+            <a href="super_lotto_check.html" class="feature-card">
                 <div class="text-4xl mb-4">🏆</div>
                 <h2 class="text-xl font-bold text-white mb-2">對獎程式</h2>
                 <p class="text-slate-400 text-sm">
@@ -44,9 +72,65 @@
             </a>
         </div>
 
-        <!-- 策略說明 -->
-        <div class="card mt-8">
-            <h3 class="text-lg font-bold text-white mb-3">可用策略</h3>
+        <!-- 大樂透 -->
+        <div class="section-label">🎱 大樂透（Lotto 649）</div>
+        <div class="grid-2 mb-8">
+            <a href="#" class="feature-card coming-soon">
+                <div class="text-4xl mb-4">🎲</div>
+                <h2 class="text-xl font-bold text-white mb-2">號碼產生器</h2>
+                <p class="text-slate-400 text-sm">
+                    包牌 / N組碰 / 加權隨機<br>
+                    49選6 + 特別號
+                </p>
+                <div class="mt-4 text-blue-400 text-sm font-medium">
+                    開始使用 →
+                </div>
+            </a>
+
+            <a href="#" class="feature-card coming-soon">
+                <div class="text-4xl mb-4">🏆</div>
+                <h2 class="text-xl font-bold text-white mb-2">對獎程式</h2>
+                <p class="text-slate-400 text-sm">
+                    輸入開獎號碼與投注號碼<br>
+                    支援春節大/小紅包對獎
+                </p>
+                <div class="mt-4 text-blue-400 text-sm font-medium">
+                    開始使用 →
+                </div>
+            </a>
+        </div>
+
+        <!-- 機率 & 策略分析 -->
+        <div class="section-label">📊 參考資訊</div>
+        <div class="grid-2 mb-8">
+            <a href="info.html" class="feature-card">
+                <div class="text-4xl mb-4">📊</div>
+                <h2 class="text-xl font-bold text-white mb-2">中獎機率</h2>
+                <p class="text-slate-400 text-sm">
+                    威力彩 / 大樂透各獎項機率<br>
+                    春節加碼大小紅包機率
+                </p>
+                <div class="mt-4 text-blue-400 text-sm font-medium">
+                    查看 →
+                </div>
+            </a>
+
+            <a href="info.html" onclick="setTimeout(()=>document.querySelector&&0,100)" class="feature-card">
+                <div class="text-4xl mb-4">📈</div>
+                <h2 class="text-xl font-bold text-white mb-2">策略分析</h2>
+                <p class="text-slate-400 text-sm">
+                    蒙地卡羅模擬 10 萬期<br>
+                    各策略報酬率 / 中獎率比較
+                </p>
+                <div class="mt-4 text-blue-400 text-sm font-medium">
+                    查看 →
+                </div>
+            </a>
+        </div>
+
+        <!-- 威力彩策略速查 -->
+        <div class="card">
+            <h3 class="text-lg font-bold text-white mb-3">威力彩可用策略</h3>
             <table class="stats-table">
                 <thead>
                     <tr>
@@ -93,7 +177,7 @@
 
         <!-- Footer -->
         <div class="text-center text-slate-500 text-sm mt-8">
-            威力彩頭獎機率 1/22,085,448 · 頭獎累積約 13.5 億時期望值 = 100 元
+            威力彩：頭獎累積約 13.5 億時期望值 = 100 元 · 大樂透：頭獎累積約 4.7 億時期望值 = 50 元
         </div>
     </div>
 </body>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中獎機率 & 策略分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tab-btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            background: rgba(71, 85, 105, 0.4);
+            color: #94a3b8;
+        }
+        .tab-btn:hover {
+            background: rgba(71, 85, 105, 0.7);
+            color: #e2e8f0;
+        }
+        .tab-btn.active {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: #3b82f6;
+            color: #60a5fa;
+        }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+        }
+        .prob-highlight {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+        .prize-float {
+            color: #f472b6;
+            font-size: 0.75rem;
+        }
+        .prize-fixed {
+            color: #34d399;
+            font-size: 0.75rem;
+        }
+        .strategy-best {
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .note-box {
+            background: rgba(15, 23, 42, 0.6);
+            border-left: 3px solid #3b82f6;
+            padding: 0.75rem 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body class="text-slate-300">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- 導航 -->
+        <div class="flex items-center gap-4 mb-8">
+            <a href="index.html" class="nav-link text-sm">← 首頁</a>
+        </div>
+
+        <!-- 標題 -->
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-white mb-1">📊 中獎機率 & 策略分析</h1>
+            <p class="text-slate-400 text-sm">威力彩 / 大樂透各獎項中獎機率、蒙地卡羅模擬策略比較</p>
+        </div>
+
+        <!-- Tab 切換 -->
+        <div class="flex gap-2 mb-6">
+            <button class="tab-btn active" onclick="switchSection('odds')">🎯 中獎機率</button>
+            <button class="tab-btn" onclick="switchSection('strategy')">📈 策略分析</button>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 中獎機率區塊 -->
+        <!-- ============================================================ -->
+        <div id="section-odds">
+
+            <!-- 威力彩機率 -->
+            <div class="card">
+                <div class="section-title">🎰 威力彩中獎機率</div>
+                <p class="text-slate-400 text-sm mb-3">
+                    第一區 38 選 6 · 第二區 8 選 1 · 每注 100 元<br>
+                    總組合數：C(38,6) × 8 = <span class="text-white font-medium">22,085,448</span>
+                </p>
+                <div style="overflow-x:auto">
+                <table class="stats-table">
+                    <thead>
+                        <tr>
+                            <th>獎項</th>
+                            <th>中獎條件</th>
+                            <th>機率</th>
+                            <th>約幾注中1次</th>
+                            <th>獎金</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-red-400 font-bold">頭獎</td>
+                            <td>6 碼 + 第二區</td>
+                            <td class="prob-highlight">1/22,085,448</td>
+                            <td>2,209 萬</td>
+                            <td>累積獎金 <span class="prize-float">浮動</span></td>
+                        </tr>
+                        <tr>
+                            <td class="text-orange-400 font-bold">貳獎</td>
+                            <td>6 碼</td>
+                            <td>1/3,155,064</td>
+                            <td>316 萬</td>
+                            <td>累積獎金 <span class="prize-float">浮動</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">參獎</td>
+                            <td>5 碼 + 第二區</td>
+                            <td>1/115,028</td>
+                            <td>11.5 萬</td>
+                            <td>150,000 元 <span class="prize-fixed">固定</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">肆獎</td>
+                            <td>5 碼</td>
+                            <td>1/16,433</td>
+                            <td>1.6 萬</td>
+                            <td>20,000 元 <span class="prize-fixed">固定</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">伍獎</td>
+                            <td>4 碼 + 第二區</td>
+                            <td>1/2,968</td>
+                            <td>2,968</td>
+                            <td>4,000 元 <span class="prize-fixed">固定</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">陸獎</td>
+                            <td>4 碼</td>
+                            <td>1/424</td>
+                            <td>424</td>
+                            <td>800 元 <span class="prize-fixed">固定</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">柒獎</td>
+                            <td>3 碼 + 第二區</td>
+                            <td>1/223</td>
+                            <td>223</td>
+                            <td>400 元 <span class="prize-fixed">固定</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">捌獎</td>
+                            <td>3 碼</td>
+                            <td>1/32</td>
+                            <td>32</td>
+                            <td>200 元 <span class="prize-fixed">固定</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">玖獎</td>
+                            <td>2 碼 + 第二區</td>
+                            <td>1/41</td>
+                            <td>41</td>
+                            <td>100 元 <span class="prize-fixed">固定</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">拾獎</td>
+                            <td>1 碼 + 第二區</td>
+                            <td>1/18</td>
+                            <td>18</td>
+                            <td>100 元 <span class="prize-fixed">固定</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+            <!-- 大樂透機率 -->
+            <div class="card">
+                <div class="section-title">🎱 大樂透中獎機率</div>
+                <p class="text-slate-400 text-sm mb-3">
+                    49 選 6 + 特別號 · 每注 50 元<br>
+                    總組合數：C(49,6) = <span class="text-white font-medium">13,983,816</span>
+                    · 特別號從剩餘 43 個號碼開出
+                </p>
+                <div style="overflow-x:auto">
+                <table class="stats-table">
+                    <thead>
+                        <tr>
+                            <th>獎項</th>
+                            <th>中獎條件</th>
+                            <th>機率</th>
+                            <th>約幾注中1次</th>
+                            <th>獎金</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-red-400 font-bold">頭獎</td>
+                            <td>6 碼全中</td>
+                            <td class="prob-highlight">1/13,983,816</td>
+                            <td>1,398 萬</td>
+                            <td>累積獎金 <span class="prize-float">浮動</span></td>
+                        </tr>
+                        <tr>
+                            <td class="text-orange-400 font-bold">貳獎</td>
+                            <td>5 碼 + 特別號</td>
+                            <td>1/2,330,636</td>
+                            <td>233 萬</td>
+                            <td>~250 萬 <span class="prize-float">浮動</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">參獎</td>
+                            <td>5 碼</td>
+                            <td>1/55,491</td>
+                            <td>5.5 萬</td>
+                            <td>~2.5 萬 <span class="prize-float">浮動</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">肆獎</td>
+                            <td>4 碼 + 特別號</td>
+                            <td>1/22,197</td>
+                            <td>2.2 萬</td>
+                            <td>~1 萬 <span class="prize-float">浮動</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">伍獎</td>
+                            <td>4 碼</td>
+                            <td>1/1,083</td>
+                            <td>1,083</td>
+                            <td>2,000 元 <span class="prize-fixed">固定</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">陸獎</td>
+                            <td>3 碼 + 特別號</td>
+                            <td>1/812</td>
+                            <td>812</td>
+                            <td>1,000 元 <span class="prize-fixed">固定</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">柒獎</td>
+                            <td>2 碼 + 特別號</td>
+                            <td>1/81</td>
+                            <td>81</td>
+                            <td>400 元 <span class="prize-fixed">固定</span></td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">普獎</td>
+                            <td>3 碼</td>
+                            <td>1/61</td>
+                            <td>61</td>
+                            <td>400 元 <span class="prize-fixed">固定</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+            <!-- 春節加碼 -->
+            <div class="card">
+                <div class="section-title">🧧 2026 春節加碼（大樂透）</div>
+                <p class="text-slate-400 text-sm mb-3">
+                    2/12 ~ 3/3 連續 20 天天天開獎<br>
+                    每期加開 9 個大紅包獎號 + 1 個小紅包獎號（互不重複，不影響原本獎項）
+                </p>
+                <div style="overflow-x:auto">
+                <table class="stats-table">
+                    <thead>
+                        <tr>
+                            <th>獎項</th>
+                            <th>中獎條件</th>
+                            <th>機率</th>
+                            <th>約幾注中1次</th>
+                            <th>獎金</th>
+                            <th>總組數</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-red-400 font-bold">大紅包</td>
+                            <td>6 碼全在 9 個大紅包號中</td>
+                            <td class="prob-highlight">1/166,474</td>
+                            <td>16.6 萬</td>
+                            <td>1,000,000 元</td>
+                            <td>480 組（共 4.8 億）</td>
+                        </tr>
+                        <tr>
+                            <td class="text-orange-400 font-bold">小紅包</td>
+                            <td>5 碼在大紅包號 + 1 碼中小紅包號</td>
+                            <td>1/110,983</td>
+                            <td>11.1 萬</td>
+                            <td>100,000 元</td>
+                            <td>800 組（共 0.8 億）</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="note-box">
+                    <strong>注意：</strong>同一組若多人中獎，獎金由中獎注數均分。
+                    480 組大紅包送完 → 大、小紅包一併結束；
+                    800 組小紅包先送完 → 只停開小紅包，大紅包繼續。
+                </div>
+            </div>
+
+            <!-- 機率比較 -->
+            <div class="card">
+                <div class="section-title">⚖️ 威力彩 vs 大樂透 快速比較</div>
+                <div style="overflow-x:auto">
+                <table class="stats-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>威力彩</th>
+                            <th>大樂透</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-slate-400 font-medium">每注價格</td>
+                            <td>100 元</td>
+                            <td>50 元</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-400 font-medium">選號方式</td>
+                            <td>38選6 + 8選1</td>
+                            <td>49選6 + 特別號</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-400 font-medium">頭獎機率</td>
+                            <td>1/22,085,448</td>
+                            <td>1/13,983,816</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-400 font-medium">最小獎機率</td>
+                            <td>拾獎 1/18</td>
+                            <td>普獎 1/61</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-400 font-medium">模擬報酬率（保底）</td>
+                            <td>~21%</td>
+                            <td>~31%</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-400 font-medium">獎項數</td>
+                            <td>10 個</td>
+                            <td>8 個</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 策略分析區塊 -->
+        <!-- ============================================================ -->
+        <div id="section-strategy" style="display:none">
+
+            <!-- 威力彩策略 -->
+            <div class="card">
+                <div class="section-title">🎰 威力彩策略模擬結果</div>
+                <p class="text-slate-400 text-sm mb-3">
+                    蒙地卡羅模擬 100,000 期 · 頭獎 2 億（保底）· 貳獎 800 萬（保底）
+                </p>
+                <div style="overflow-x:auto">
+                <table class="stats-table">
+                    <thead>
+                        <tr>
+                            <th>策略</th>
+                            <th>成本</th>
+                            <th>平均獎金</th>
+                            <th>平均損益</th>
+                            <th>報酬率</th>
+                            <th>中獎率</th>
+                            <th>打平獲利率</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-blue-400 font-medium">56注全包</td>
+                            <td>5,600</td>
+                            <td>1,188</td>
+                            <td class="text-red-400">-4,412</td>
+                            <td>21.2%</td>
+                            <td>100.0%</td>
+                            <td>1.8%</td>
+                        </tr>
+                        <tr>
+                            <td class="text-blue-400 font-medium">28注(必中九獎)</td>
+                            <td>2,800</td>
+                            <td>599</td>
+                            <td class="text-red-400">-2,201</td>
+                            <td>21.4%</td>
+                            <td>99.7%</td>
+                            <td>1.9%</td>
+                        </tr>
+                        <tr>
+                            <td class="text-blue-400 font-medium">21注(7組碰)</td>
+                            <td>2,100</td>
+                            <td>460</td>
+                            <td class="text-red-400">-1,640</td>
+                            <td>21.9%</td>
+                            <td>31.5%</td>
+                            <td>6.3%</td>
+                        </tr>
+                        <tr>
+                            <td class="text-blue-400 font-medium">8注(第二區全包)</td>
+                            <td>800</td>
+                            <td>168</td>
+                            <td class="text-red-400">-632</td>
+                            <td>21.0%</td>
+                            <td>67.1%</td>
+                            <td>3.9%</td>
+                        </tr>
+                        <tr>
+                            <td class="text-blue-400 font-medium">8注(第一區展開)</td>
+                            <td>800</td>
+                            <td>169</td>
+                            <td class="text-red-400">-631</td>
+                            <td>21.1%</td>
+                            <td>77.4%</td>
+                            <td>2.2%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="note-box">
+                    所有策略報酬率約 <strong>21%</strong>（每 100 元回收約 21 元）。
+                    56注/28注中獎率接近 100%，但多為小獎（拾獎 100 元）。
+                    21注(7組碰) 打平獲利率最高（6.3%）。
+                </div>
+            </div>
+
+            <!-- 大樂透策略 -->
+            <div class="card">
+                <div class="section-title">🎱 大樂透策略模擬結果</div>
+                <p class="text-slate-400 text-sm mb-3">
+                    蒙地卡羅模擬 100,000 期 · 頭獎 1 億（保底）· 貳獎 250 萬 · 參獎 2.5 萬 · 肆獎 1 萬
+                </p>
+                <div style="overflow-x:auto">
+                <table class="stats-table">
+                    <thead>
+                        <tr>
+                            <th>策略</th>
+                            <th>成本</th>
+                            <th>平均獎金</th>
+                            <th>平均損益</th>
+                            <th>報酬率</th>
+                            <th>中獎率</th>
+                            <th>打平獲利率</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-blue-400 font-medium">包牌9注(49號全分配)</td>
+                            <td>450</td>
+                            <td>162</td>
+                            <td class="text-red-400">-288</td>
+                            <td>36.1%</td>
+                            <td>26.6%</td>
+                            <td>3.0%</td>
+                        </tr>
+                        <tr>
+                            <td class="text-blue-400 font-medium">7碰3組(21注)</td>
+                            <td>1,050</td>
+                            <td>324</td>
+                            <td class="text-red-400">-726</td>
+                            <td>30.8%</td>
+                            <td>8.8%</td>
+                            <td>8.8%</td>
+                        </tr>
+                        <tr>
+                            <td class="text-blue-400 font-medium">7碰1組(7注)</td>
+                            <td>350</td>
+                            <td>108</td>
+                            <td class="text-red-400">-242</td>
+                            <td>30.9%</td>
+                            <td>5.1%</td>
+                            <td>5.1%</td>
+                        </tr>
+                        <tr class="strategy-best">
+                            <td class="text-blue-400 font-medium">加權隨機9注 ⭐</td>
+                            <td>450</td>
+                            <td>139</td>
+                            <td class="text-red-400">-311</td>
+                            <td>30.9%</td>
+                            <td>24.1%</td>
+                            <td>4.8%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="note-box">
+                    <strong>結論：</strong>「加權隨機9注」策略在相近報酬率下，有不錯的中獎率（24.1%）與打平獲利率（4.8%），
+                    成本也只要 450 元，是性價比最高的選擇。<br>
+                    「包牌9注」報酬率最高（36.1%），但打平獲利率較低（3.0%）。
+                </div>
+            </div>
+
+            <!-- 理論期望值 -->
+            <div class="card">
+                <div class="section-title">📐 模擬期望值（保底獎金，10 萬期模擬）</div>
+                <div style="overflow-x:auto">
+                <table class="stats-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>威力彩（每注 100 元）</th>
+                            <th>大樂透（每注 50 元）</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-slate-400 font-medium">保底頭獎</td>
+                            <td>2 億</td>
+                            <td>1 億</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-400 font-medium">單注平均獎金</td>
+                            <td>~21 元</td>
+                            <td>~15.5 元</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-400 font-medium">模擬報酬率</td>
+                            <td>~21%</td>
+                            <td>~31%</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-400 font-medium">每注平均損失</td>
+                            <td>~79 元</td>
+                            <td>~34.5 元</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-400 font-medium">打平頭獎金額</td>
+                            <td>~13.5 億（EV = 100 元）</td>
+                            <td>~4.7 億（EV = 50 元）</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="note-box">
+                    以上數據來自蒙地卡羅模擬 100,000 期，使用保底獎金作為基準。<br>
+                    模擬 10 萬期幾乎不會中頭獎（機率千萬分之一），因此模擬報酬率低於數學理論值。<br>
+                    「打平頭獎金額」指頭獎累積到多少時，單注期望獎金 = 票價（報酬率 100%）。
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-slate-500 text-sm mt-8">
+            機率由組合數學精確計算 · 策略數據由蒙地卡羅模擬 100,000 期產生
+        </div>
+    </div>
+
+    <script>
+        function switchSection(section) {
+            document.getElementById('section-odds').style.display = section === 'odds' ? 'block' : 'none';
+            document.getElementById('section-strategy').style.display = section === 'strategy' ? 'block' : 'none';
+
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

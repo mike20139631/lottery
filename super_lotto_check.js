@@ -12,8 +12,8 @@ const PRIZE_TABLE = {
     '4,1': { name: '伍獎', prize: 4000 },
     '4,0': { name: '陸獎', prize: 800 },
     '3,1': { name: '柒獎', prize: 400 },
-    '3,0': { name: '捌獎', prize: 200 },
-    '2,1': { name: '玖獎', prize: 100 },
+    '2,1': { name: '捌獎', prize: 200 },
+    '3,0': { name: '玖獎', prize: 100 },
     '1,1': { name: '拾獎', prize: 100 },
 };
 

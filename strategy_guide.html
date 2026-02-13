@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>策略說明</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .strategy-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        .strategy-card h3 {
+            color: #60a5fa;
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+        }
+        .strategy-card .meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+        .strategy-card .meta span {
+            background: rgba(59, 130, 246, 0.15);
+            color: #93c5fd;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.375rem;
+        }
+        .strategy-card .desc {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+        .strategy-card .desc strong {
+            color: #e2e8f0;
+        }
+        .strategy-card .steps {
+            background: rgba(15, 23, 42, 0.6);
+            border-left: 3px solid rgba(59, 130, 246, 0.4);
+            padding: 0.75rem 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            line-height: 1.8;
+        }
+        .strategy-card .params {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        .lottery-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 0.25rem;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+        .lottery-label.super {
+            background: rgba(244, 63, 94, 0.2);
+            color: #fb7185;
+        }
+        .lottery-label.lotto {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+        .strategy-jump {
+            background: rgba(71, 85, 105, 0.5);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            width: 100%;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            padding-right: 2.5rem;
+        }
+        .strategy-jump:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        .strategy-jump option {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.8);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 999;
+        }
+        .back-to-top:hover {
+            background: rgba(59, 130, 246, 1);
+            transform: scale(1.1);
+        }
+        .back-to-top.show {
+            display: flex;
+        }
+    </style>
+</head>
+<body class="text-slate-300">
+    <div class="max-w-3xl mx-auto px-4 py-8">
+        <!-- 導航 -->
+        <div class="flex items-center gap-4 mb-8">
+            <a href="index.html" class="nav-link text-sm">← 首頁</a>
+            <span class="text-slate-600">|</span>
+            <a href="info.html#strategy" class="nav-link text-sm">策略分析</a>
+        </div>
+
+        <!-- 標題 -->
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-white mb-1">📖 策略說明</h1>
+            <p class="text-slate-400 text-sm">威力彩 / 大樂透各策略的運作原理與參數說明</p>
+        </div>
+
+        <!-- 策略快速跳轉 -->
+        <div class="mb-6">
+            <select class="strategy-jump" id="strategyJump" onchange="jumpToStrategy(this.value)">
+                <option value="">📌 選擇策略快速跳轉…</option>
+                <optgroup label="🎰 威力彩">
+                    <option value="s-56">56注全包</option>
+                    <option value="s-28">28注（必中九獎）</option>
+                    <option value="s-21">21注（7組碰）</option>
+                    <option value="s-8z2">8注（第二區全包）</option>
+                    <option value="s-8z1">8注（第一區展開）</option>
+                    <option value="s-8dual">8注（雙區全覆蓋）</option>
+                </optgroup>
+                <optgroup label="🎱 大樂透">
+                    <option value="s-pack9">包牌9注</option>
+                    <option value="s-weight9">加權隨機9注</option>
+                    <option value="s-7c1">7碰1組（7注）</option>
+                    <option value="s-7c3">7碰3組（21注）</option>
+                    <option value="s-lock-seq">鎖碼子集+依序補</option>
+                    <option value="s-lock-rand">鎖碼子集+隨機補</option>
+                </optgroup>
+                <optgroup label="💡 其他">
+                    <option value="s-concepts">共通概念</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 威力彩策略 -->
+        <!-- ============================================================ -->
+        <div class="card">
+            <div class="section-title">🎰 威力彩策略</div>
+            <p class="text-slate-400 text-sm mb-4">
+                規則：第一區 1~38 選 6 碼 + 第二區 1~8 選 1 碼，每注 100 元
+            </p>
+
+            <!-- 56注全包 -->
+            <div class="strategy-card" id="s-56">
+                <h3>56注全包</h3>
+                <div class="meta">
+                    <span>56 注</span>
+                    <span>5,600 元</span>
+                </div>
+                <div class="desc">
+                    第一區 38 碼全覆蓋 + 第二區 1~8 全包，保證涵蓋所有號碼。
+                </div>
+                <div class="steps">
+                    1. 將 1~38 隨機打散，分成 7 組（前 6 組各 6 碼，第 7 組剩 2 碼）<br>
+                    2. 第 7 組用 <strong>favorite 加權</strong>從剩餘號碼補 4 碼湊滿 6 碼<br>
+                    3. 每組搭配第二區 1~8 全包 → 7 × 8 = <strong>56 注</strong>
+                </div>
+                <div class="params">參數：favorite（喜歡的號碼，加入補充池增加選中機率）</div>
+            </div>
+
+            <!-- 28注(必中九獎) -->
+            <div class="strategy-card" id="s-28">
+                <h3>28注（必中九獎）</h3>
+                <div class="meta">
+                    <span>28 注</span>
+                    <span>2,800 元</span>
+                </div>
+                <div class="desc">
+                    第一區 38 碼全覆蓋 + 第二區分兩半覆蓋，保證至少中玖獎（3 碼，100 元）。
+                </div>
+                <div class="steps">
+                    1. 將 1~38 隨機打散，分成 7 組（前 3 組 + 後 4 組）<br>
+                    2. 第二區 1~8 隨機分成兩半（各 4 個）<br>
+                    3. 前半 4 個第二區 × 前 3 組第一區 = 12 注<br>
+                    4. 後半 4 個第二區 × 後 4 組第一區 = 16 注<br>
+                    5. 合計 <strong>28 注</strong>，第一區全覆蓋 + 第二區全覆蓋
+                </div>
+                <div class="params">參數：favorite（喜歡的號碼，用於第 7 組補碼加權）</div>
+            </div>
+
+            <!-- 21注(7組碰) -->
+            <div class="strategy-card" id="s-21">
+                <h3>21注（7組碰）</h3>
+                <div class="meta">
+                    <span>21 注</span>
+                    <span>2,100 元</span>
+                </div>
+                <div class="desc">
+                    精選 7 個第一區號碼做 C(7,6)=7 種組合，搭配 3 個第二區號碼。集中火力在少數號碼上。
+                </div>
+                <div class="steps">
+                    1. 指定（或隨機補滿）7 個第一區號碼<br>
+                    2. 產生 C(7,6) = 7 種 6 碼組合<br>
+                    3. 指定（或隨機補滿）3 個第二區號碼<br>
+                    4. 7 組 × 3 個第二區 = <strong>21 注</strong>
+                </div>
+                <div class="params">參數：selectedFirst（7 個第一區號碼）、selectedSecond（3 個第二區號碼）</div>
+            </div>
+
+            <!-- 8注(第二區全包) -->
+            <div class="strategy-card" id="s-8z2">
+                <h3>8注（第二區全包）</h3>
+                <div class="meta">
+                    <span>8 注</span>
+                    <span>800 元</span>
+                </div>
+                <div class="desc">
+                    固定 1 組第一區號碼，第二區 1~8 全包。保證第二區一定中，只看第一區運氣。
+                </div>
+                <div class="steps">
+                    1. 指定（或隨機補滿）6 個第一區號碼<br>
+                    2. 搭配第二區 1~8 全包 = <strong>8 注</strong>
+                </div>
+                <div class="params">參數：selectedFirst（6 個第一區號碼）</div>
+            </div>
+
+            <!-- 8注(第一區展開) -->
+            <div class="strategy-card" id="s-8z1">
+                <h3>8注（第一區展開）</h3>
+                <div class="meta">
+                    <span>8 注</span>
+                    <span>800 元</span>
+                </div>
+                <div class="desc">
+                    8 組不同的第一區號碼，第二區 1~8 各用一次。用加權池讓偏好號碼更容易被選中，展開覆蓋更多第一區號碼。
+                </div>
+                <div class="steps">
+                    1. 建立加權號碼池 = 1~38 基礎 + favorite + hot + cold（重複加入提高機率）<br>
+                    2. 從池中依序抽取 8 組各 6 碼（已抽出的號碼從池中移除）<br>
+                    3. 第二區 1~8 隨機分配，各用一次<br>
+                    4. 合計 <strong>8 注</strong>，覆蓋最多 48 個不同第一區號碼
+                </div>
+                <div class="params">參數：favorite、hot（熱號）、cold（冷號）</div>
+            </div>
+
+            <!-- 8注(雙區全覆蓋) -->
+            <div class="strategy-card" id="s-8dual">
+                <h3>8注（雙區全覆蓋）</h3>
+                <div class="meta">
+                    <span>8 注</span>
+                    <span>800 元</span>
+                </div>
+                <div class="desc">
+                    第一區 38 碼全覆蓋 + 第二區 1~8 全包。用 8 注同時覆蓋雙區所有號碼，是最經濟的全覆蓋策略。
+                </div>
+                <div class="steps">
+                    1. 將 1~38 隨機打散，前 6 注各 6 碼（覆蓋 36 碼）<br>
+                    2. 第 7 注：剩餘 2 碼 + 從已覆蓋 36 碼中用 <strong>favorite 加權</strong>補 4 碼<br>
+                    3. 第 8 注：從全部 38 碼中用 <strong>favorite 加權</strong>選 6 碼<br>
+                    4. 第二區 1~8 隨機分配給 8 注 → <strong>8 注</strong>全覆蓋雙區
+                </div>
+                <div class="params">參數：favorite（喜歡的號碼，用於第 7、8 注加權）</div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 大樂透策略 -->
+        <!-- ============================================================ -->
+        <div class="card">
+            <div class="section-title">🎱 大樂透策略</div>
+            <p class="text-slate-400 text-sm mb-4">
+                規則：1~49 選 6 碼 + 特別號（從剩餘 43 碼開出），每注 50 元
+            </p>
+
+            <!-- 包牌9注 -->
+            <div class="strategy-card" id="s-pack9">
+                <h3>包牌9注（49號全分配）</h3>
+                <div class="meta">
+                    <span>9 注</span>
+                    <span>450 元</span>
+                </div>
+                <div class="desc">
+                    將 1~49 全部號碼分配到 9 注中，確保每個號碼至少出現一次。
+                </div>
+                <div class="steps">
+                    1. 將 1~49 隨機打散，前 8 注各 6 碼（覆蓋 48 碼）<br>
+                    2. 第 9 注：剩餘 1 碼 + 從 <strong>favorite</strong> 補 5 碼湊滿 6 碼<br>
+                    3. favorite 不足時從 1~49 隨機補
+                </div>
+                <div class="params">參數：favorite（喜歡的號碼，用於補足第 9 注）</div>
+            </div>
+
+            <!-- 加權隨機9注 -->
+            <div class="strategy-card" id="s-weight9">
+                <h3>加權隨機9注</h3>
+                <div class="meta">
+                    <span>9 注</span>
+                    <span>450 元</span>
+                </div>
+                <div class="desc">
+                    從加權號碼池中隨機抽取 9 組號碼。偏好號碼在池中出現多次，被選中機率更高。
+                </div>
+                <div class="steps">
+                    1. 建立加權號碼池 = 1~49 基礎 + favorite + hot + cold<br>
+                    2. 每注從池中隨機取 6 個不重複號碼<br>
+                    3. 重複 9 次 → <strong>9 注</strong>
+                </div>
+                <div class="params">參數：favorite、hot（熱號）、cold（冷號）</div>
+            </div>
+
+            <!-- 7碰1組(7注) -->
+            <div class="strategy-card" id="s-7c1">
+                <h3>7碰1組（7注）</h3>
+                <div class="meta">
+                    <span>7 注</span>
+                    <span>350 元</span>
+                </div>
+                <div class="desc">
+                    從號碼池中選 7 個號碼，產生 C(7,6)=7 種組合。集中火力在少數號碼上，若這 7 碼中了 6 碼就中頭獎。
+                </div>
+                <div class="steps">
+                    1. 從 favorite 池中取 7 個號碼（不足時從 1~49 隨機補）<br>
+                    2. 產生 C(7,6) = 7 種 6 碼組合 → <strong>7 注</strong>
+                </div>
+                <div class="params">參數：favorite（號碼池，至少 7 個）</div>
+            </div>
+
+            <!-- 7碰3組(21注) -->
+            <div class="strategy-card" id="s-7c3">
+                <h3>7碰3組（21注）</h3>
+                <div class="meta">
+                    <span>21 注</span>
+                    <span>1,050 元</span>
+                </div>
+                <div class="desc">
+                    與 7碰1組 相同邏輯，但重複 3 組。每組從同一個號碼池中隨機取 7 碼，增加覆蓋範圍。
+                </div>
+                <div class="steps">
+                    1. 從 favorite 池中取 7 個號碼 → C(7,6) = 7 注<br>
+                    2. 重複 3 組（每組重新隨機取 7 碼）→ <strong>21 注</strong>
+                </div>
+                <div class="params">參數：favorite（號碼池，至少 7 個）</div>
+            </div>
+
+            <!-- 鎖碼子集+依序補 -->
+            <div class="strategy-card" id="s-lock-seq">
+                <h3>鎖碼子集+依序補（~500元）</h3>
+                <div class="meta">
+                    <span>~10 注</span>
+                    <span>~500 元</span>
+                </div>
+                <div class="desc">
+                    鎖定 N 個號碼，產生所有非空子集作為基底，再依序補碼湊滿 6 碼。確保鎖定號碼的所有組合都被覆蓋，同時覆蓋 1~49 全部號碼。
+                </div>
+                <div class="steps">
+                    1. 鎖定 N 碼（例如 [10, 1, 3]），產生 2^N - 1 = 7 個非空子集<br>
+                    2. 將 1~49 中未鎖定的 46 碼隨機打散<br>
+                    3. 每個子集<strong>依序</strong>從 46 碼中補碼湊滿 6 碼<br>
+                    4. 檢查是否覆蓋 1~49，未覆蓋的號碼再補注數<br>
+                    5. 最後一注不足 6 碼時隨機補 → 約 <strong>10 注</strong>
+                </div>
+                <div class="params">參數：locked（鎖定的號碼，例如 [10, 1, 3]）</div>
+            </div>
+
+            <!-- 鎖碼子集+隨機補 -->
+            <div class="strategy-card" id="s-lock-rand">
+                <h3>鎖碼子集+隨機補（~600元）</h3>
+                <div class="meta">
+                    <span>~10-12 注</span>
+                    <span>~600 元</span>
+                </div>
+                <div class="desc">
+                    與依序補相同邏輯，但補碼方式改為隨機。因為隨機補碼可能產生重複覆蓋，未覆蓋的號碼較多，需要更多補注。中獎率略高於依序補。
+                </div>
+                <div class="steps">
+                    1. 鎖定 N 碼，產生 2^N - 1 個非空子集<br>
+                    2. 每個子集從 46 碼中<strong>隨機</strong>補碼湊滿 6 碼<br>
+                    3. 檢查是否覆蓋 1~49，未覆蓋的號碼再補注數<br>
+                    4. 注數不固定（每次隨機結果不同）→ 約 <strong>10-12 注</strong>
+                </div>
+                <div class="params">參數：locked（鎖定的號碼，例如 [10, 1, 3]）</div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 共通概念 -->
+        <!-- ============================================================ -->
+        <div class="card" id="s-concepts">
+            <div class="section-title">💡 共通概念</div>
+
+            <div class="strategy-card">
+                <h3>Favorite 加權</h3>
+                <div class="desc">
+                    將偏好號碼<strong>重複加入</strong>號碼池中，使其在隨機抽取時被選中的機率更高。<br>
+                    例如：池中有 [1,2,3,...,38]，favorite = [3, 17]<br>
+                    → 加權後池 = [1,2,3,...,38, <strong>3, 17</strong>]，3 和 17 出現 2 次，被選中機率約為其他號碼的 2 倍。
+                </div>
+            </div>
+
+            <div class="strategy-card">
+                <h3>N 碰（N-Group）</h3>
+                <div class="desc">
+                    從號碼池中選 N 個號碼，產生所有 C(N,6) 種 6 碼組合。<br>
+                    <strong>N=7</strong> → C(7,6) = 7 注，若 7 碼中了 6 碼就中頭獎<br>
+                    <strong>N=8</strong> → C(8,6) = 28 注<br>
+                    <strong>N=9</strong> → C(9,6) = 84 注
+                </div>
+            </div>
+
+            <div class="strategy-card">
+                <h3>全覆蓋 vs 集中火力</h3>
+                <div class="desc">
+                    <strong>全覆蓋策略</strong>（56注全包、28注、包牌9注）：涵蓋所有號碼，保證小獎但成本高。<br>
+                    <strong>集中火力策略</strong>（7碰、鎖碼子集）：押注少數號碼，中大獎機率較高但可能全槓。<br>
+                    <strong>加權隨機</strong>：介於兩者之間，用偏好號碼提高特定號碼的出現率。
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-slate-500 text-sm mt-8">
+            策略邏輯來自 monte_carlo.py / monte_carlo_lotto_cny_special.py
+        </div>
+    </div>
+
+    <!-- 回到頂部按鈕 -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到頂部">↑</button>
+
+    <script>
+        function jumpToStrategy(id) {
+            if (!id) return;
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            // 選完後重置下拉選單
+            document.getElementById('strategyJump').selectedIndex = 0;
+        }
+
+        window.addEventListener('scroll', function() {
+            const btn = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                btn.classList.add('show');
+            } else {
+                btn.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

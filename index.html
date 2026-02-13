@@ -16,23 +16,6 @@
             color: #64748b;
             margin-bottom: 0.75rem;
         }
-        .coming-soon {
-            opacity: 0.5;
-            pointer-events: none;
-            position: relative;
-        }
-        .coming-soon::after {
-            content: '即將推出';
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(251, 191, 36, 0.2);
-            color: #fbbf24;
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 0.2rem 0.5rem;
-            border-radius: 0.25rem;
-        }
     </style>
 </head>
 <body class="text-slate-300">
@@ -75,24 +58,40 @@
         <!-- 大樂透 -->
         <div class="section-label">🎱 大樂透（Lotto 649）</div>
         <div class="grid-2 mb-8">
-            <a href="#" class="feature-card coming-soon">
+            <a href="lotto_generate.html" class="feature-card">
                 <div class="text-4xl mb-4">🎲</div>
                 <h2 class="text-xl font-bold text-white mb-2">號碼產生器</h2>
                 <p class="text-slate-400 text-sm">
-                    包牌 / N組碰 / 加權隨機<br>
-                    49選6 + 特別號
+                    包牌 / N組碰 / 加權隨機 / 鎖碼子集<br>
+                    49選6，每注 50 元
                 </p>
                 <div class="mt-4 text-blue-400 text-sm font-medium">
                     開始使用 →
                 </div>
             </a>
 
-            <a href="#" class="feature-card coming-soon">
+            <a href="lotto_check.html" class="feature-card">
                 <div class="text-4xl mb-4">🏆</div>
                 <h2 class="text-xl font-bold text-white mb-2">對獎程式</h2>
                 <p class="text-slate-400 text-sm">
                     輸入開獎號碼與投注號碼<br>
-                    支援春節大/小紅包對獎
+                    49選6 + 特別號
+                </p>
+                <div class="mt-4 text-blue-400 text-sm font-medium">
+                    開始使用 →
+                </div>
+            </a>
+        </div>
+
+        <!-- 春節加碼 -->
+        <div class="section-label">🧧 春節加碼（2/12 ~ 3/3）</div>
+        <div class="grid-2 mb-8">
+            <a href="lotto_cny_check.html" class="feature-card">
+                <div class="text-4xl mb-4">🧧</div>
+                <h2 class="text-xl font-bold text-white mb-2">大紅包小紅包對獎</h2>
+                <p class="text-slate-400 text-sm">
+                    大紅包 100 萬 · 小紅包 10 萬<br>
+                    春節限定加碼獎項
                 </p>
                 <div class="mt-4 text-blue-400 text-sm font-medium">
                     開始使用 →
@@ -115,12 +114,25 @@
                 </div>
             </a>
 
-            <a href="info.html" onclick="setTimeout(()=>document.querySelector&&0,100)" class="feature-card">
+            <a href="info.html#strategy" class="feature-card">
                 <div class="text-4xl mb-4">📈</div>
                 <h2 class="text-xl font-bold text-white mb-2">策略分析</h2>
                 <p class="text-slate-400 text-sm">
                     蒙地卡羅模擬 10 萬期<br>
                     各策略報酬率 / 中獎率比較
+                </p>
+                <div class="mt-4 text-blue-400 text-sm font-medium">
+                    查看 →
+                </div>
+            </a>
+        </div>
+        <div class="grid-2 mb-8">
+            <a href="strategy_guide.html" class="feature-card">
+                <div class="text-4xl mb-4">📖</div>
+                <h2 class="text-xl font-bold text-white mb-2">策略說明</h2>
+                <p class="text-slate-400 text-sm">
+                    威力彩 / 大樂透各策略<br>
+                    運作原理與參數說明
                 </p>
                 <div class="mt-4 text-blue-400 text-sm font-medium">
                     查看 →
@@ -170,6 +182,65 @@
                         <td>8</td>
                         <td>800元</td>
                         <td class="text-slate-400 text-sm">8組加權第一區 × 各1個第二區</td>
+                    </tr>
+                    <tr>
+                        <td class="text-blue-400 font-medium">8注(雙區全覆蓋)</td>
+                        <td>8</td>
+                        <td>800元</td>
+                        <td class="text-slate-400 text-sm">38碼全覆蓋 × 第二區1~8</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 大樂透策略速查 -->
+        <div class="card">
+            <h3 class="text-lg font-bold text-white mb-3">大樂透可用策略</h3>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>策略</th>
+                        <th>注數</th>
+                        <th>成本</th>
+                        <th>說明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-green-400 font-medium">包牌9注</td>
+                        <td>9</td>
+                        <td>450元</td>
+                        <td class="text-slate-400 text-sm">49號全分配到9注</td>
+                    </tr>
+                    <tr>
+                        <td class="text-green-400 font-medium">加權隨機9注</td>
+                        <td>9</td>
+                        <td>450元</td>
+                        <td class="text-slate-400 text-sm">favorite/hot/cold 加權隨機</td>
+                    </tr>
+                    <tr>
+                        <td class="text-green-400 font-medium">7碰1組(7注)</td>
+                        <td>7</td>
+                        <td>350元</td>
+                        <td class="text-slate-400 text-sm">C(7,6)=7 種組合</td>
+                    </tr>
+                    <tr>
+                        <td class="text-green-400 font-medium">7碰3組(21注)</td>
+                        <td>21</td>
+                        <td>1,050元</td>
+                        <td class="text-slate-400 text-sm">C(7,6)=7 × 3 組</td>
+                    </tr>
+                    <tr>
+                        <td class="text-green-400 font-medium">鎖碼子集+依序補</td>
+                        <td>~10</td>
+                        <td>~500元</td>
+                        <td class="text-slate-400 text-sm">鎖N碼全子集 + 依序補碼覆蓋49號</td>
+                    </tr>
+                    <tr>
+                        <td class="text-green-400 font-medium">鎖碼子集+隨機補</td>
+                        <td>~10-12</td>
+                        <td>~600元</td>
+                        <td class="text-slate-400 text-sm">鎖N碼全子集 + 隨機補碼覆蓋49號</td>
                     </tr>
                 </tbody>
             </table>

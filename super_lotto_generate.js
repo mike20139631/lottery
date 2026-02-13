@@ -152,6 +152,39 @@ function strategy8SecondFull(selectedFirst = []) {
     return tickets; // 8 注
 }
 
+function strategy8BothFull(favorite = []) {
+    const firstArea = shuffle(FIRST_AREA_RANGE);
+
+    // 前 6 注：每注 6 碼，覆蓋 36 碼
+    const groups = [];
+    for (let i = 0; i < 6; i++) {
+        groups.push(firstArea.slice(i * 6, (i + 1) * 6).sort((a, b) => a - b));
+    }
+
+    // 剩餘 2 碼
+    const leftover = firstArea.slice(36);
+
+    // 第 7 注：2 碼 + 從已覆蓋 36 碼中用 favorite 加權補 4 碼
+    const pool7 = [...firstArea.slice(0, 36)];
+    pool7.push(...favorite.filter(n => firstArea.slice(0, 36).includes(n)));
+    const fill4 = sample(pool7, 4);
+    groups.push([...leftover, ...fill4].sort((a, b) => a - b));
+
+    // 第 8 注：從全部 38 碼中用 favorite 加權選 6 碼
+    const pool8 = [...FIRST_AREA_RANGE];
+    pool8.push(...favorite.filter(n => FIRST_AREA_RANGE.includes(n)));
+    const fill6 = sample(pool8, 6);
+    groups.push(fill6.sort((a, b) => a - b));
+
+    // 8 組搭配第二區 1~8
+    const secondOrder = shuffle(SECOND_AREA_RANGE);
+    const tickets = [];
+    for (let i = 0; i < 8; i++) {
+        tickets.push({ first: groups[i], second: secondOrder[i] });
+    }
+    return tickets; // 8 注
+}
+
 function strategy8FirstSpread(favorite = [], hot = [], cold = []) {
     // 建立加權號碼池
     let numbers = [...FIRST_AREA_RANGE, ...favorite, ...hot, ...cold];
@@ -236,6 +269,9 @@ function generateTickets(strategyName, options = {}) {
             break;
         case '8注(第二區全包)':
             tickets = strategy8SecondFull(selectedFirst);
+            break;
+        case '8注(雙區全覆蓋)':
+            tickets = strategy8BothFull(favorite);
             break;
         case '8注(第一區展開)':
             tickets = strategy8FirstSpread(

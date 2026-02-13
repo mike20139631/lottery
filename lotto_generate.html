@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>威力彩號碼產生器</title>
+    <title>大樂透號碼產生器</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -14,13 +14,15 @@
         <div class="flex items-center gap-4 mb-8">
             <a href="index.html" class="nav-link text-sm">← 首頁</a>
             <span class="text-slate-600">|</span>
-            <a href="super_lotto_check.html" class="nav-link text-sm">對獎程式</a>
+            <a href="lotto_check.html" class="nav-link text-sm">對獎程式</a>
+            <span class="text-slate-600">|</span>
+            <a href="lotto_cny_check.html" class="nav-link text-sm">大紅包小紅包對獎</a>
         </div>
 
         <!-- 標題 -->
         <div class="mb-8">
-            <h1 class="text-2xl font-bold text-white mb-1">🎲 威力彩號碼產生器</h1>
-            <p class="text-slate-400 text-sm">選擇策略、設定偏好號碼，產生投注號碼</p>
+            <h1 class="text-2xl font-bold text-white mb-1">🎲 大樂透號碼產生器</h1>
+            <p class="text-slate-400 text-sm">選擇策略、設定偏好號碼，產生投注號碼（49 選 6，每注 50 元）</p>
         </div>
 
         <!-- 設定區 -->
@@ -31,39 +33,34 @@
             <div class="mb-4">
                 <label for="strategy">選擇策略</label>
                 <select id="strategy" onchange="onStrategyChange()">
-                    <option value="56注全包">56注全包（5,600元）</option>
-                    <option value="28注(必中九獎)" selected>28注 必中九獎（2,800元）</option>
-                    <option value="21注(7組碰)">21注 7組碰（2,100元）</option>
-                    <option value="8注(第二區全包)">8注 第二區全包（800元）</option>
-                    <option value="8注(第一區展開)">8注 第一區展開（800元）</option>
-                    <option value="8注(雙區全覆蓋)">8注 雙區全覆蓋（800元）</option>
+                    <option value="包牌9注">包牌9注（450元）</option>
+                    <option value="加權隨機9注">加權隨機9注（450元）</option>
+                    <option value="7碰1組(7注)">7碰1組 7注（350元）</option>
+                    <option value="7碰3組(21注)">7碰3組 21注（1,050元）</option>
+                    <option value="鎖碼子集+依序補">鎖碼子集+依序補（~500元）</option>
+                    <option value="鎖碼子集+隨機補" selected>鎖碼子集+隨機補（~500-600元）</option>
                 </select>
             </div>
 
             <!-- 動態參數區 -->
-            <div id="params-favorite" class="mb-4">
-                <label for="favorite">喜歡的號碼 <span class="text-slate-500">（用於 56注、28注、8注一區，逗號或空格分隔）</span></label>
-                <input type="text" id="favorite" placeholder="例: 3, 17, 8" value="3, 17, 8">
+            <div id="params-favorite" class="mb-4" style="display:none">
+                <label for="favorite">喜歡的號碼 <span class="text-slate-500">（用於 包牌、加權隨機、N碰，逗號或空格分隔）</span></label>
+                <input type="text" id="favorite" placeholder="例: 37, 9, 4, 5, 8" value="37, 9, 4, 5, 8, 10, 17, 1">
             </div>
 
             <div id="params-hot" class="mb-4" style="display:none">
-                <label for="hot">熱號 <span class="text-slate-500">（用於 8注一區）</span></label>
-                <input type="text" id="hot" placeholder="例: 14, 17, 7, 10, 23" value="14, 17, 7, 10, 23, 25, 26, 34, 35, 37, 38">
+                <label for="hot">熱號 <span class="text-slate-500">（用於 加權隨機）</span></label>
+                <input type="text" id="hot" placeholder="例: 39, 2, 7, 21, 24" value="39, 2, 7, 21, 24, 25, 32, 45">
             </div>
 
             <div id="params-cold" class="mb-4" style="display:none">
-                <label for="cold">冷號 <span class="text-slate-500">（用於 8注一區）</span></label>
-                <input type="text" id="cold" placeholder="例: 2, 4, 6, 13, 18" value="2, 4, 6, 13, 18, 21, 24">
+                <label for="cold">冷號 <span class="text-slate-500">（用於 加權隨機）</span></label>
+                <input type="text" id="cold" placeholder="例: 5, 8, 15, 17, 28" value="5, 8, 15, 17, 28, 37, 46, 47">
             </div>
 
-            <div id="params-first" class="mb-4" style="display:none">
-                <label for="selectedFirst">指定第一區號碼 <span class="text-slate-500">（21注需7個、8注二區需6個，不足自動補）</span></label>
-                <input type="text" id="selectedFirst" placeholder="例: 3, 7, 17, 23, 28, 32, 37" value="3, 7, 17, 23, 28, 32, 37">
-            </div>
-
-            <div id="params-second" class="mb-4" style="display:none">
-                <label for="selectedSecond">指定第二區號碼 <span class="text-slate-500">（21注需3個，不足自動補）</span></label>
-                <input type="text" id="selectedSecond" placeholder="例: 1, 4, 5" value="1, 4, 5">
+            <div id="params-locked" class="mb-4">
+                <label for="locked">鎖定號碼 <span class="text-slate-500">（用於 鎖碼子集，鎖 N 碼產生所有子集）</span></label>
+                <input type="text" id="locked" placeholder="例: 10, 1, 3" value="10, 1, 3">
             </div>
 
             <!-- 產生按鈕 -->
@@ -93,7 +90,7 @@
                 <!-- Python 格式 -->
                 <div>
                     <div class="flex items-center justify-between mb-2">
-                        <label class="mb-0">Python 格式 <span class="text-slate-500">（可貼入 check_power_lottery.py）</span></label>
+                        <label class="mb-0">Python 格式 <span class="text-slate-500">（可貼入對獎程式）</span></label>
                         <button class="btn-secondary" onclick="copyText('result-python')">📋 複製</button>
                     </div>
                     <div id="result-python" class="result-box" style="font-size:0.8rem"></div>
@@ -102,7 +99,7 @@
         </div>
     </div>
 
-    <script src="super_lotto_generate.js"></script>
+    <script src="lotto_generate.js"></script>
     <script>
         // 根據策略顯示/隱藏對應參數
         function onStrategyChange() {
@@ -112,20 +109,18 @@
             document.getElementById('params-favorite').style.display = 'none';
             document.getElementById('params-hot').style.display = 'none';
             document.getElementById('params-cold').style.display = 'none';
-            document.getElementById('params-first').style.display = 'none';
-            document.getElementById('params-second').style.display = 'none';
+            document.getElementById('params-locked').style.display = 'none';
 
-            if (s === '56注全包' || s === '28注(必中九獎)' || s === '8注(雙區全覆蓋)') {
+            if (s === '包牌9注') {
                 document.getElementById('params-favorite').style.display = 'block';
-            } else if (s === '21注(7組碰)') {
-                document.getElementById('params-first').style.display = 'block';
-                document.getElementById('params-second').style.display = 'block';
-            } else if (s === '8注(第二區全包)') {
-                document.getElementById('params-first').style.display = 'block';
-            } else if (s === '8注(第一區展開)') {
+            } else if (s === '加權隨機9注') {
                 document.getElementById('params-favorite').style.display = 'block';
                 document.getElementById('params-hot').style.display = 'block';
                 document.getElementById('params-cold').style.display = 'block';
+            } else if (s === '7碰1組(7注)' || s === '7碰3組(21注)') {
+                document.getElementById('params-favorite').style.display = 'block';
+            } else if (s === '鎖碼子集+依序補' || s === '鎖碼子集+隨機補') {
+                document.getElementById('params-locked').style.display = 'block';
             }
         }
 
@@ -136,12 +131,16 @@
                 favorite: parseNumbers(document.getElementById('favorite').value),
                 hot: parseNumbers(document.getElementById('hot').value),
                 cold: parseNumbers(document.getElementById('cold').value),
-                selectedFirst: parseNumbers(document.getElementById('selectedFirst').value),
-                selectedSecond: parseNumbers(document.getElementById('selectedSecond').value),
+                locked: parseNumbers(document.getElementById('locked').value),
             };
 
+            // 鎖碼預設值
+            if (options.locked.length === 0) {
+                options.locked = [10, 1, 3];
+            }
+
             try {
-                const result = generateTickets(strategyName, options);
+                const result = generateLottoTickets(strategyName, options);
 
                 document.getElementById('result-summary').textContent =
                     `${strategyName} · ${result.nBets} 注 · ${result.cost.toLocaleString()} 元`;

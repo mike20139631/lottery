@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大紅包小紅包對獎程式</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="text-slate-300">
+    <div class="max-w-3xl mx-auto px-4 py-8">
+        <!-- 導航 -->
+        <div class="flex items-center gap-4 mb-8">
+            <a href="index.html" class="nav-link text-sm">← 首頁</a>
+            <span class="text-slate-600">|</span>
+            <a href="lotto_generate.html" class="nav-link text-sm">號碼產生器</a>
+            <span class="text-slate-600">|</span>
+            <a href="lotto_check.html" class="nav-link text-sm">大樂透對獎</a>
+        </div>
+
+        <!-- 標題 -->
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-white mb-1">🧧 大紅包小紅包對獎程式</h1>
+            <p class="text-slate-400 text-sm">
+                2026 春節加碼（2/12 ~ 3/3）· 大紅包 100 萬 · 小紅包 10 萬<br>
+                <span class="text-yellow-400 text-xs">僅計加碼獎項，一般大樂透獎項請使用大樂透對獎程式</span>
+            </p>
+        </div>
+
+        <!-- 開獎號碼 -->
+        <div class="card">
+            <h2 class="text-lg font-bold text-white mb-4">開獎號碼</h2>
+
+            <div class="mb-4">
+                <label for="bigRedText">
+                    大紅包號碼（每組 9 個號碼，用 [...] 格式）
+                    <span class="text-slate-500">· 每期最多 84 組</span>
+                </label>
+                <textarea id="bigRedText" rows="8" placeholder="每組 9 個號碼，例：
+[2, 5, 11, 17, 23, 30, 35, 41, 48]
+[1, 8, 14, 19, 26, 33, 38, 44, 49]
+[3, 7, 12, 18, 24, 31, 36, 42, 47]
+..."></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label for="smallRedText">
+                    小紅包號碼（每組 1 個號碼，與大紅包組一一對應）
+                    <span class="text-slate-500">· 逗號分隔或 [...] 格式</span>
+                </label>
+                <textarea id="smallRedText" rows="3" placeholder="例: 6, 22, 39, 15, 28, ...
+或 [6, 22, 39, 15, 28, ...]"></textarea>
+            </div>
+        </div>
+
+        <!-- 投注號碼 -->
+        <div class="card">
+            <h2 class="text-lg font-bold text-white mb-4">投注號碼</h2>
+
+            <!-- 輸入方式切換 -->
+            <div class="flex gap-2 mb-4">
+                <button id="tab-text" class="btn-secondary" onclick="switchTab('text')" style="background:rgba(59,130,246,0.3); border-color:#3b82f6">
+                    📝 貼上文字格式
+                </button>
+                <button id="tab-manual" class="btn-secondary" onclick="switchTab('manual')">
+                    ✏️ 手動輸入
+                </button>
+            </div>
+
+            <!-- 文字格式輸入 -->
+            <div id="input-text">
+                <label for="ticketText">
+                    貼上產生器輸出的文字或 Python 格式
+                    <span class="text-slate-500">（自動解析 [...] 括號，每組 6 個號碼）</span>
+                </label>
+                <textarea id="ticketText" rows="14" placeholder="注   1: [7, 10, 14, 15, 20, 43]
+注   2: [1, 13, 17, 21, 29, 38]
+...
+
+或 Python 格式：
+tickets = [
+    [7, 10, 14, 15, 20, 43],
+    [1, 13, 17, 21, 29, 38],
+]"></textarea>
+            </div>
+
+            <!-- 手動輸入 -->
+            <div id="input-manual" style="display:none">
+                <div id="manual-tickets">
+                    <div class="manual-ticket mb-3 p-3 rounded-lg" style="background:rgba(15,23,42,0.4)">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-slate-400 text-sm font-medium">注 1</span>
+                        </div>
+                        <label>6 個號碼</label>
+                        <input type="text" class="manual-nums" placeholder="例: 7, 10, 14, 15, 20, 43">
+                    </div>
+                </div>
+                <button class="btn-secondary mt-2" onclick="addManualTicket()">+ 新增一注</button>
+            </div>
+
+            <!-- 對獎按鈕 -->
+            <button class="btn-primary w-full mt-4" onclick="doCheck()">
+                🧧 開始對獎
+            </button>
+        </div>
+
+        <!-- 結果區 -->
+        <div id="result-section" style="display:none">
+            <div class="card">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-lg font-bold text-white">對獎結果</h2>
+                    <span id="result-summary" class="text-sm text-slate-400"></span>
+                </div>
+                <div id="result-content"></div>
+            </div>
+        </div>
+
+        <!-- 規則說明 -->
+        <div class="card" style="background:rgba(15,23,42,0.6); border-left:3px solid #f59e0b">
+            <h3 class="text-sm font-bold text-yellow-400 mb-2">中獎規則</h3>
+            <div class="text-slate-400 text-sm leading-relaxed">
+                <strong class="text-red-400">大紅包（100 萬）：</strong>投注 6 碼全部落在某組 9 個大紅包號碼中<br>
+                <strong class="text-orange-400">小紅包（10 萬）：</strong>投注 5 碼落在某組大紅包號碼中 + 1 碼是該組小紅包號碼<br>
+                <br>
+                每期開出大紅包 84 組 + 小紅包 126 組（前 84 組與大紅包一一對應）<br>
+                活動總額：大紅包 480 組（4.8 億）· 小紅包 800 組（0.8 億）
+            </div>
+        </div>
+    </div>
+
+    <script src="lotto_cny_check.js"></script>
+    <script>
+        let currentTab = 'text';
+        let manualTicketCount = 1;
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('input-text').style.display = tab === 'text' ? 'block' : 'none';
+            document.getElementById('input-manual').style.display = tab === 'manual' ? 'block' : 'none';
+
+            document.getElementById('tab-text').style.background = tab === 'text' ? 'rgba(59,130,246,0.3)' : '';
+            document.getElementById('tab-text').style.borderColor = tab === 'text' ? '#3b82f6' : '';
+            document.getElementById('tab-manual').style.background = tab === 'manual' ? 'rgba(59,130,246,0.3)' : '';
+            document.getElementById('tab-manual').style.borderColor = tab === 'manual' ? '#3b82f6' : '';
+        }
+
+        function addManualTicket() {
+            manualTicketCount++;
+            const container = document.getElementById('manual-tickets');
+            const div = document.createElement('div');
+            div.className = 'manual-ticket mb-3 p-3 rounded-lg';
+            div.style.background = 'rgba(15,23,42,0.4)';
+            div.innerHTML = `
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-slate-400 text-sm font-medium">注 ${manualTicketCount}</span>
+                    <button class="text-red-400 text-xs hover:text-red-300" onclick="this.closest('.manual-ticket').remove()">✕ 移除</button>
+                </div>
+                <label>6 個號碼</label>
+                <input type="text" class="manual-nums" placeholder="例: 7, 10, 14, 15, 20, 43">
+            `;
+            container.appendChild(div);
+        }
+
+        function getTickets() {
+            if (currentTab === 'text') {
+                const text = document.getElementById('ticketText').value;
+                if (!text.trim()) throw new Error('請輸入投注號碼');
+                const tickets = parseCnyTicketText(text);
+                if (tickets.length === 0) throw new Error('未找到有效的投注號碼（需要每組 6 個號碼的 [...] 格式）');
+                return tickets;
+            } else {
+                const inputs = document.querySelectorAll('.manual-nums');
+                const tickets = [];
+                for (const input of inputs) {
+                    const nums = parseNumbers(input.value);
+                    if (nums.length === 6) {
+                        tickets.push(nums);
+                    }
+                }
+                if (tickets.length === 0) throw new Error('請至少輸入一注（6 個號碼）');
+                return tickets;
+            }
+        }
+
+        function doCheck() {
+            try {
+                // 解析大紅包開獎號碼
+                const bigRedText = document.getElementById('bigRedText').value;
+                if (!bigRedText.trim()) throw new Error('請輸入大紅包開獎號碼');
+                const bigRedGroups = parseBigRedGroups(bigRedText);
+                if (bigRedGroups.length === 0) throw new Error('未找到有效的大紅包號碼（需要每組 9 個號碼的 [...] 格式）');
+
+                // 解析小紅包開獎號碼
+                const smallRedText = document.getElementById('smallRedText').value;
+                if (!smallRedText.trim()) throw new Error('請輸入小紅包開獎號碼');
+                const smallRedNums = parseSmallRedNums(smallRedText);
+                if (smallRedNums.length === 0) throw new Error('未找到有效的小紅包號碼');
+
+                // 解析投注號碼
+                const tickets = getTickets();
+
+                // 對獎
+                const result = checkCnyPrizes(bigRedGroups, smallRedNums, tickets);
+
+                // 顯示結果
+                const summaryParts = [`${result.nBets} 注`];
+                if (result.bigRedCount > 0) summaryParts.push(`🧧 大紅包 ${result.bigRedCount}`);
+                if (result.smallRedCount > 0) summaryParts.push(`🎁 小紅包 ${result.smallRedCount}`);
+                if (result.winCount === 0) summaryParts.push('未中獎');
+
+                document.getElementById('result-summary').textContent = summaryParts.join(' · ');
+                document.getElementById('result-content').innerHTML = formatCnyCheckHTML(result);
+                document.getElementById('result-section').style.display = 'block';
+                document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+            } catch (e) {
+                alert('錯誤: ' + e.message);
+            }
+        }
+    </script>
+</body>
+</html>

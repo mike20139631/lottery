@@ -67,6 +67,8 @@
         <!-- 導航 -->
         <div class="flex items-center gap-4 mb-8">
             <a href="index.html" class="nav-link text-sm">← 首頁</a>
+            <span class="text-slate-600">|</span>
+            <a href="strategy_guide.html" class="nav-link text-sm">📖 策略說明</a>
         </div>
 
         <!-- 標題 -->
@@ -77,8 +79,8 @@
 
         <!-- Tab 切換 -->
         <div class="flex gap-2 mb-6">
-            <button class="tab-btn active" onclick="switchSection('odds')">🎯 中獎機率</button>
-            <button class="tab-btn" onclick="switchSection('strategy')">📈 策略分析</button>
+            <button class="tab-btn active" data-section="odds" onclick="switchSection('odds', this)">🎯 中獎機率</button>
+            <button class="tab-btn" data-section="strategy" onclick="switchSection('strategy', this)">📈 策略分析</button>
         </div>
 
         <!-- ============================================================ -->
@@ -266,7 +268,8 @@
                 <div class="section-title">🧧 2026 春節加碼（大樂透）</div>
                 <p class="text-slate-400 text-sm mb-3">
                     2/12 ~ 3/3 連續 20 天天天開獎<br>
-                    每期加開 9 個大紅包獎號 + 1 個小紅包獎號（互不重複，不影響原本獎項）
+                    每期加開大紅包 84 組（每組 9 個號碼）+ 小紅包 126 組（每組 1 個號碼）<br>
+                    不影響原本大樂透獎項，為額外加碼獎項
                 </p>
                 <div style="overflow-x:auto">
                 <table class="stats-table">
@@ -274,34 +277,44 @@
                         <tr>
                             <th>獎項</th>
                             <th>中獎條件</th>
-                            <th>機率</th>
-                            <th>約幾注中1次</th>
+                            <th>單組機率</th>
+                            <th>每期組數</th>
+                            <th>每期機率</th>
                             <th>獎金</th>
-                            <th>總組數</th>
+                            <th>單注 EV</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td class="text-red-400 font-bold">大紅包</td>
-                            <td>6 碼全在 9 個大紅包號中</td>
+                            <td>6 碼全在該組 9 個號碼中</td>
                             <td class="prob-highlight">1/166,474</td>
-                            <td>16.6 萬</td>
+                            <td>84 組</td>
+                            <td>~0.05%</td>
                             <td>1,000,000 元</td>
-                            <td>480 組（共 4.8 億）</td>
+                            <td class="text-emerald-400">504.58 元</td>
                         </tr>
                         <tr>
                             <td class="text-orange-400 font-bold">小紅包</td>
-                            <td>5 碼在大紅包號 + 1 碼中小紅包號</td>
+                            <td>5 碼在大紅包號 + 1 碼是小紅包號</td>
                             <td>1/110,983</td>
-                            <td>11.1 萬</td>
+                            <td>126 組</td>
+                            <td>~0.11%</td>
                             <td>100,000 元</td>
-                            <td>800 組（共 0.8 億）</td>
+                            <td class="text-emerald-400">113.53 元</td>
+                        </tr>
+                        <tr style="border-top: 1px solid rgba(148, 163, 184, 0.2)">
+                            <td colspan="5"></td>
+                            <td class="text-slate-400 font-medium">單注期望獎金</td>
+                            <td class="text-emerald-400 font-bold">618.11 元</td>
                         </tr>
                     </tbody>
                 </table>
                 </div>
                 <div class="note-box">
-                    <strong>注意：</strong>同一組若多人中獎，獎金由中獎注數均分。
+                    <strong>期望報酬率 1,236%</strong>（每注 50 元，期望獎金 618 元）— 這是加碼獎項的額外回報。<br>
+                    活動總額：大紅包 480 組（共 4.8 億）、小紅包 800 組（共 0.8 億）。<br>
+                    同一組若多人中獎，獎金由中獎注數均分。
                     480 組大紅包送完 → 大、小紅包一併結束；
                     800 組小紅包先送完 → 只停開小紅包，大紅包繼續。
                 </div>
@@ -502,6 +515,93 @@
                 </div>
             </div>
 
+            <!-- 春節加碼策略 -->
+            <div class="card">
+                <div class="section-title">🧧 春節加碼策略模擬結果（僅加碼獎項）</div>
+                <p class="text-slate-400 text-sm mb-3">
+                    蒙地卡羅模擬 10,000 期 · 大紅包 100 萬 × 84 組/期 · 小紅包 10 萬 × 126 組/期<br>
+                    <span class="text-yellow-400">理論單注期望獎金 618 元（報酬率 1,236%）— 加碼期間買大樂透的額外回報</span>
+                </p>
+                <div style="overflow-x:auto">
+                <table class="stats-table">
+                    <thead>
+                        <tr>
+                            <th>策略</th>
+                            <th>成本</th>
+                            <th>平均獎金</th>
+                            <th>平均損益</th>
+                            <th>報酬率</th>
+                            <th>中獎率</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-blue-400 font-medium">單注(1注)</td>
+                            <td>50</td>
+                            <td>270</td>
+                            <td class="text-emerald-400">+220</td>
+                            <td>540%</td>
+                            <td>0.09%</td>
+                        </tr>
+                        <tr>
+                            <td class="text-blue-400 font-medium">包牌9注</td>
+                            <td>450</td>
+                            <td>5,010</td>
+                            <td class="text-emerald-400">+4,560</td>
+                            <td>1,113%</td>
+                            <td>1.3%</td>
+                        </tr>
+                        <tr>
+                            <td class="text-blue-400 font-medium">加權隨機9注</td>
+                            <td>450</td>
+                            <td>4,710</td>
+                            <td class="text-emerald-400">+4,260</td>
+                            <td>1,047%</td>
+                            <td>1.27%</td>
+                        </tr>
+                        <tr>
+                            <td class="text-blue-400 font-medium">7碰1組(7注)</td>
+                            <td>350</td>
+                            <td>5,380</td>
+                            <td class="text-emerald-400">+5,030</td>
+                            <td>1,537%</td>
+                            <td>1.0%</td>
+                        </tr>
+                        <tr>
+                            <td class="text-blue-400 font-medium">7碰3組(21注)</td>
+                            <td>1,050</td>
+                            <td>11,970</td>
+                            <td class="text-emerald-400">+10,920</td>
+                            <td>1,140%</td>
+                            <td>0.93%</td>
+                        </tr>
+                        <tr class="strategy-best">
+                            <td class="text-blue-400 font-medium">鎖3碼子集+依序補 ⭐</td>
+                            <td>500</td>
+                            <td>6,008</td>
+                            <td class="text-emerald-400">+5,508</td>
+                            <td>1,202%</td>
+                            <td>1.63%</td>
+                        </tr>
+                        <tr class="strategy-best">
+                            <td class="text-blue-400 font-medium">鎖3碼子集+隨機補 ⭐</td>
+                            <td>561</td>
+                            <td>6,855</td>
+                            <td class="text-emerald-400">+6,294</td>
+                            <td>1,222%</td>
+                            <td>1.78%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="note-box">
+                    <strong>結論：</strong>春節加碼期間所有策略的期望損益皆為正（加碼獎項是額外回報）。<br>
+                    「鎖3碼子集+隨機補」中獎率最高（1.78%），成本約 561 元，平均獎金 6,855 元。<br>
+                    注意：中獎率仍極低（~1-2%），大部分期數獎金為 0，中獎時為 10 萬或 100 萬的大額獎金。<br>
+                    鎖3碼子集+依序補/隨機補 的數據取自 100,000 期模擬，其餘為 10,000 期模擬。
+                </div>
+            </div>
+
             <!-- 理論期望值 -->
             <div class="card">
                 <div class="section-title">📐 模擬期望值（保底獎金，10 萬期模擬）</div>
@@ -558,13 +658,28 @@
     </div>
 
     <script>
-        function switchSection(section) {
+        function switchSection(section, clickedBtn) {
             document.getElementById('section-odds').style.display = section === 'odds' ? 'block' : 'none';
             document.getElementById('section-strategy').style.display = section === 'strategy' ? 'block' : 'none';
 
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if (clickedBtn) {
+                clickedBtn.classList.add('active');
+            } else {
+                // 找到對應的按鈕
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    if (btn.getAttribute('data-section') === section) btn.classList.add('active');
+                });
+            }
         }
+
+        // 頁面載入時根據 hash 切換 tab
+        (function() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash === 'strategy') {
+                switchSection('strategy');
+            }
+        })();
     </script>
 </body>
 </html>

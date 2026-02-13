@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大樂透對獎程式</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="text-slate-300">
+    <div class="max-w-3xl mx-auto px-4 py-8">
+        <!-- 導航 -->
+        <div class="flex items-center gap-4 mb-8">
+            <a href="index.html" class="nav-link text-sm">← 首頁</a>
+            <span class="text-slate-600">|</span>
+            <a href="lotto_generate.html" class="nav-link text-sm">號碼產生器</a>
+            <span class="text-slate-600">|</span>
+            <a href="lotto_cny_check.html" class="nav-link text-sm">大紅包小紅包對獎</a>
+        </div>
+
+        <!-- 標題 -->
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-white mb-1">🏆 大樂透對獎程式</h1>
+            <p class="text-slate-400 text-sm">輸入開獎號碼與投注號碼，自動逐注對獎（49 選 6 + 特別號）</p>
+        </div>
+
+        <!-- 開獎號碼 -->
+        <div class="card">
+            <h2 class="text-lg font-bold text-white mb-4">開獎號碼</h2>
+            <div class="grid-2">
+                <div>
+                    <label for="winNums">開獎號碼（6 個號碼，逗號或空格分隔）</label>
+                    <input type="text" id="winNums" placeholder="例: 5, 12, 18, 27, 33, 41" value="">
+                </div>
+                <div>
+                    <label for="specialNum">特別號（1 個號碼）</label>
+                    <input type="number" id="specialNum" min="1" max="49" placeholder="例: 22" value="">
+                </div>
+            </div>
+            <div class="grid-2 mt-4">
+                <div>
+                    <label for="jackpot1">頭獎累積獎金 <span class="text-slate-500">（0 = 未知）</span></label>
+                    <input type="number" id="jackpot1" value="0" min="0">
+                </div>
+                <div>
+                    <label for="prize2">貳獎獎金 <span class="text-slate-500">（0 = 未知）</span></label>
+                    <input type="number" id="prize2" value="0" min="0">
+                </div>
+            </div>
+            <div class="grid-2 mt-4">
+                <div>
+                    <label for="prize3">參獎獎金 <span class="text-slate-500">（0 = 未知）</span></label>
+                    <input type="number" id="prize3" value="0" min="0">
+                </div>
+                <div>
+                    <label for="prize4">肆獎獎金 <span class="text-slate-500">（0 = 未知）</span></label>
+                    <input type="number" id="prize4" value="0" min="0">
+                </div>
+            </div>
+        </div>
+
+        <!-- 投注號碼 -->
+        <div class="card">
+            <h2 class="text-lg font-bold text-white mb-4">投注號碼</h2>
+
+            <!-- 輸入方式切換 -->
+            <div class="flex gap-2 mb-4">
+                <button id="tab-text" class="btn-secondary" onclick="switchTab('text')" style="background:rgba(59,130,246,0.3); border-color:#3b82f6">
+                    📝 貼上文字格式
+                </button>
+                <button id="tab-manual" class="btn-secondary" onclick="switchTab('manual')">
+                    ✏️ 手動輸入
+                </button>
+            </div>
+
+            <!-- 文字格式輸入 -->
+            <div id="input-text">
+                <label for="ticketText">
+                    貼上產生器輸出的文字或 Python 格式
+                    <span class="text-slate-500">（自動解析 [...] 括號，每組 6 個號碼）</span>
+                </label>
+                <textarea id="ticketText" rows="14" placeholder="注   1: [7, 10, 14, 15, 20, 43]
+注   2: [1, 13, 17, 21, 29, 38]
+注   3: [3, 6, 28, 38, 41, 42]
+...
+
+或 Python 格式：
+tickets = [
+    [7, 10, 14, 15, 20, 43],
+    [1, 13, 17, 21, 29, 38],
+]"></textarea>
+            </div>
+
+            <!-- 手動輸入 -->
+            <div id="input-manual" style="display:none">
+                <div id="manual-tickets">
+                    <div class="manual-ticket mb-3 p-3 rounded-lg" style="background:rgba(15,23,42,0.4)">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-slate-400 text-sm font-medium">注 1</span>
+                        </div>
+                        <label>6 個號碼</label>
+                        <input type="text" class="manual-nums" placeholder="例: 7, 10, 14, 15, 20, 43">
+                    </div>
+                </div>
+                <button class="btn-secondary mt-2" onclick="addManualTicket()">+ 新增一注</button>
+            </div>
+
+            <!-- 對獎按鈕 -->
+            <button class="btn-primary w-full mt-4" onclick="doCheck()">
+                🏆 開始對獎
+            </button>
+        </div>
+
+        <!-- 結果區 -->
+        <div id="result-section" style="display:none">
+            <div class="card">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-lg font-bold text-white">對獎結果</h2>
+                    <span id="result-summary" class="text-sm text-slate-400"></span>
+                </div>
+                <div id="result-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="lotto_check.js"></script>
+    <script>
+        let currentTab = 'text';
+        let manualTicketCount = 1;
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('input-text').style.display = tab === 'text' ? 'block' : 'none';
+            document.getElementById('input-manual').style.display = tab === 'manual' ? 'block' : 'none';
+
+            document.getElementById('tab-text').style.background = tab === 'text' ? 'rgba(59,130,246,0.3)' : '';
+            document.getElementById('tab-text').style.borderColor = tab === 'text' ? '#3b82f6' : '';
+            document.getElementById('tab-manual').style.background = tab === 'manual' ? 'rgba(59,130,246,0.3)' : '';
+            document.getElementById('tab-manual').style.borderColor = tab === 'manual' ? '#3b82f6' : '';
+        }
+
+        function addManualTicket() {
+            manualTicketCount++;
+            const container = document.getElementById('manual-tickets');
+            const div = document.createElement('div');
+            div.className = 'manual-ticket mb-3 p-3 rounded-lg';
+            div.style.background = 'rgba(15,23,42,0.4)';
+            div.innerHTML = `
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-slate-400 text-sm font-medium">注 ${manualTicketCount}</span>
+                    <button class="text-red-400 text-xs hover:text-red-300" onclick="this.closest('.manual-ticket').remove()">✕ 移除</button>
+                </div>
+                <label>6 個號碼</label>
+                <input type="text" class="manual-nums" placeholder="例: 7, 10, 14, 15, 20, 43">
+            `;
+            container.appendChild(div);
+        }
+
+        function getTickets() {
+            if (currentTab === 'text') {
+                const text = document.getElementById('ticketText').value;
+                if (!text.trim()) throw new Error('請輸入投注號碼');
+                const tickets = parseLottoTicketText(text);
+                if (tickets.length === 0) throw new Error('未找到有效的投注號碼（需要每組 6 個號碼的 [...] 格式）');
+                return tickets;
+            } else {
+                const inputs = document.querySelectorAll('.manual-nums');
+                const tickets = [];
+                for (const input of inputs) {
+                    const nums = parseNumbers(input.value);
+                    if (nums.length === 6) {
+                        tickets.push(nums);
+                    }
+                }
+                if (tickets.length === 0) throw new Error('請至少輸入一注（6 個號碼）');
+                return tickets;
+            }
+        }
+
+        function doCheck() {
+            try {
+                // 解析開獎號碼
+                const winNums = parseNumbers(document.getElementById('winNums').value);
+                const specialNum = parseInt(document.getElementById('specialNum').value, 10);
+                if (winNums.length !== 6) throw new Error('開獎號碼需要 6 個號碼');
+                if (isNaN(specialNum) || specialNum < 1 || specialNum > 49) throw new Error('特別號需要 1~49 的號碼');
+
+                const jackpot1 = parseInt(document.getElementById('jackpot1').value, 10) || 0;
+                const prize2 = parseInt(document.getElementById('prize2').value, 10) || 0;
+                const prize3 = parseInt(document.getElementById('prize3').value, 10) || 0;
+                const prize4 = parseInt(document.getElementById('prize4').value, 10) || 0;
+
+                // 解析投注號碼
+                const tickets = getTickets();
+
+                // 對獎
+                const result = checkLotto(winNums, specialNum, tickets, jackpot1, prize2, prize3, prize4);
+
+                // 顯示結果
+                document.getElementById('result-summary').textContent =
+                    `${result.nBets} 注 · 中 ${result.winCount} 注`;
+                document.getElementById('result-content').innerHTML =
+                    formatLottoCheckHTML(winNums, specialNum, result);
+                document.getElementById('result-section').style.display = 'block';
+                document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+            } catch (e) {
+                alert('錯誤: ' + e.message);
+            }
+        }
+    </script>
+</body>
+</html>
